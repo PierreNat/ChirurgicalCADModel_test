@@ -14,7 +14,7 @@ def main():
     params_database = []
     im_nr = 1
 
-    vertices_1, faces_1, textures_1 = nr.load_obj("3D_objects/rubik_color.obj", load_texture=True)#, texture_size=4)
+    vertices_1, faces_1, textures_1 = nr.load_obj("3D_objects/wrist.obj", load_texture=True) #, texture_size=4)
     print(vertices_1.shape)
     print(faces_1.shape)
     vertices_1 = vertices_1[None, :, :]  # add dimension
@@ -25,8 +25,8 @@ def main():
     print(vertices_1.shape)
     print(faces_1.shape)
 
-    file_name_extension = '_10'
-    nb_im = 10
+    file_name_extension = 'wrist_10000_t2'
+    nb_im = 10000
     #init and create renderer object
     R = np.array([np.radians(0), np.radians(0), np.radians(0)])  # angle in degree
     t = np.array([0, 0, 0])  # translation in meter
@@ -41,12 +41,12 @@ def main():
     loop = tqdm.tqdm(range(0, nb_im))
     for i in loop:
         # define transfomration parameter randomly uniform
-        alpha = uniform(0, 180)
-        beta =  uniform(0, 180)
-        gamma = uniform(0, 180)
+        alpha = 0 #uniform(0, 180)
+        beta =   0 #uniform(0, 180)
+        gamma = 0  #uniform(0, 180)
         x = uniform(-2, 2)
         y = uniform(-2, 2)
-        z = uniform(8, 14)
+        z = uniform(7, 10)
         R = np.array([np.radians(alpha), np.radians(beta), np.radians(gamma)])  # angle in degree
         t = np.array([x, y, z])  # translation in meter
 
@@ -81,15 +81,15 @@ def main():
 
 
 
-        if(im_nr%1 == 0):
-            fig = plt.figure()
-            fig.add_subplot(1, 2, 1)
-            plt.imshow(image)
-
-            fig.add_subplot(1, 2, 2)
-            plt.imshow(sil, cmap='gray')
-            plt.show()
-            plt.close(fig)
+        # if(im_nr%1000 == 0):
+        #     fig = plt.figure()
+        #     fig.add_subplot(1, 2, 1)
+        #     plt.imshow(image)
+        #
+        #     fig.add_subplot(1, 2, 2)
+        #     plt.imshow(sil, cmap='gray')
+        #     plt.show()
+        #     plt.close(fig)
 
 # save database
 # reshape in the form (nbr of image, x dim, y dim, layers)

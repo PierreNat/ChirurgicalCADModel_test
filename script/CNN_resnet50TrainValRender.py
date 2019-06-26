@@ -20,11 +20,11 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 torch.cuda.empty_cache()
 print(device)
 
-file_name_extension = '10000_t'  # choose the corresponding database to use
+file_name_extension = 'wrist_10000_t'  # choose the corresponding database to use
 
 batch_size = 4
 
-n_epochs = 15
+n_epochs = 1
 
 target_size = (512, 512)
 
