@@ -81,15 +81,15 @@ def main():
 
 
 
-        # if(im_nr%1000 == 0):
-        #     fig = plt.figure()
-        #     fig.add_subplot(1, 2, 1)
-        #     plt.imshow(image)
-        #
-        #     fig.add_subplot(1, 2, 2)
-        #     plt.imshow(sil, cmap='gray')
-        #     plt.show()
-        #     plt.close(fig)
+        if(im_nr%1 == 0):
+            fig = plt.figure()
+            fig.add_subplot(1, 2, 1)
+            plt.imshow(image)
+
+            fig.add_subplot(1, 2, 2)
+            plt.imshow(sil, cmap='gray')
+            plt.show()
+            plt.close(fig)
 
 # save database
 # reshape in the form (nbr of image, x dim, y dim, layers)

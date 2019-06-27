@@ -7,8 +7,8 @@ import neural_renderer as nr
 def limit(param):
     # return param
     # return param
-    up_limit = 14
-    low_limit = 4
+    up_limit = 11
+    low_limit = 5
     if param < low_limit or param > up_limit:
         # print('param out of range was restricted')
         if torch.abs(param-low_limit) < torch.abs(param-low_limit):

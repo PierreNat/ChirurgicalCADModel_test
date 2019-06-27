@@ -35,7 +35,7 @@ fileExtension = 'firsttest' #string to ad at the end of the file
 
 cubeSetName = 'wrist_{}'.format(file_name_extension) #used to describe the document name
 
-date4File = '062619_{}'.format(fileExtension) #mmddyy
+date4File = '072619_{}'.format(fileExtension) #mmddyy
 
 
 cubes = np.load(cubes_file)

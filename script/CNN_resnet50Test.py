@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 
 from utils_functions.render1item import render_1_image
 from utils_functions.resnet50 import resnet50
+from utils_functions.resnet50_multCPU import resnet50_multCPU
 from utils_functions.test import testResnet
 
 
@@ -15,14 +16,9 @@ torch.cuda.empty_cache()
 print(device)
 
 modelName = '062619_firsttest_TempModel_train_wrist_wrist_10000_t_batchsOf4img_0.0%noise_epochs_n0_firsttest_RegrOnly'
-# modelName = '042819_TempModel_Best_train_cubes_5000rgbRt_6_batchs_epochs_n39_last' #4 Rt 5000 images
-# modelName = '042619_TempModel_Best_train_cubes_10000rgbRt_6_batchs_epochs_n37_2000setRt' #4 Rt 2000 images
-# modelName = '042619_TempModel_Best_train_cubes_10000rgbAlphaBeta_6_batchs_epochs_n37_2000set2' #alpha beta rotation
+
 
 file_name_extension = 'wrist_10000_t'
-# file_name_extension = '5000rgbRt'
-# file_name_extension = '2000rgbRt'
-# file_name_extension = '10000rgbAlphaBeta'
 
 cubes_file = 'Npydatabase/cubes_{}.npy'.format(file_name_extension)
 silhouettes_file = 'Npydatabase/sils_{}.npy'.format(file_name_extension)
@@ -107,7 +103,7 @@ test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False,
 #  ------------------------------------------------------------------
 
 
-model = resnet50(cifar=False, modelName=modelName) #train with the saved model from the training script
+model = resnet50_multCPU(cifar=False, modelName=modelName) #train with the saved model from the training script
 model = model.to(device)  # transfer the neural net onto the GPU
 criterion = nn.MSELoss()
 
@@ -116,7 +112,7 @@ criterion = nn.MSELoss()
 # test the model
 epochsValLoss = open(
     "./results/TestProtocol_{}_regressionOnly.txt".format(file_name_extension), "w+")
-parameters, predicted_params, test_losses, al, bl, gl, xl, yl, zl  = testResnet(model, test_dataloader, criterion, file_name_extension, device)
+parameters, predicted_params, test_losses, al, bl, gl, xl, yl, zl = testResnet(model, test_dataloader, criterion, file_name_extension, device)
 
 #TODO insestead
 # test_losses, al, bl, gl, xl, yl, zl = testResnet(model, test_dataloader, loss_function,
@@ -137,17 +133,17 @@ parameters, predicted_params, test_losses, al, bl, gl, xl, yl, zl  = testResnet(
 # display computed parameter against ground truth
 
 
-obj_name = 'rubik_color'
+obj_name = 'wrist'
 
 nb_im = 7
 # loop = tqdm.tqdm(range(0,nb_im))
 for i in range(0,nb_im):
 
     randIm = i+6 #select a random image
-    # print('computed parameter_{}: '.format(i+1))
-    # print(predicted_params[randIm])
-    # print('ground truth parameter_{}: '.format(i+1))
-    # print(params[randIm])
+    print('computed parameter_{}: '.format(i+1))
+    print(predicted_params[randIm])
+    print('ground truth parameter_{}: '.format(i+1))
+    print(params[randIm])
     print('angle and translation MSE loss for {}: '.format(i))
     loss_angle = (predicted_params[randIm][0:3] - params[randIm][0:3])**2
     loss_translation = (predicted_params[randIm][3:6]-params[randIm][3:6])**2
@@ -155,7 +151,7 @@ for i in range(0,nb_im):
     # print('error {} degree and {} meter '.format(np.rad2deg(predicted_params[randIm][0:3]-params[randIm][0:3]), predicted_params[randIm][3:6]-params[randIm][3:6]))
 
 
-    im = render_1_image(obj_name, predicted_params[randIm])  # create the dataset
+    im = render_1_image(obj_name, torch.from_numpy(predicted_params[randIm]))  # create the dataset
 
 
     plt.subplot(2, nb_im, i+1)
