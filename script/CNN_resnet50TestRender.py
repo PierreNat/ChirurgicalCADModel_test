@@ -3,6 +3,8 @@ script to train a resnet 50 network only with n epoch
 Version 4
 render is done during the computation beside the regression
 """
+
+import time
 import torch
 import torch.nn as nn
 import numpy as np
@@ -112,8 +114,10 @@ criterion = nn.MSELoss()
 #  ------------------------------------------------------------------
 
 # test the model
+print("Start timer")
+start_time = time.time()
 parameters, predicted_params, test_losses, al, bl, gl, xl, yl, zl = testRenderResnet(model, test_dataloader, criterion, file_name_extension, device, obj_name)
-
+print("computing prediction done in  {} seconds ---".format(time.time() - start_time))
 
 #  ------------------------------------------------------------------
 # display computed parameter against ground truth
@@ -126,7 +130,10 @@ nb_im = 7
 for i in range(0,nb_im):
 
     randIm = i+6 #select a random image
-
+    print('computed parameter_{}: '.format(i+1))
+    print(predicted_params[randIm])
+    print('ground truth parameter_{}: '.format(i+1))
+    print(params[randIm])
     print('angle and translation MSE loss for {}: '.format(i))
     loss_angle = (predicted_params[randIm][0:3] - params[randIm][0:3])**2
     loss_translation = (predicted_params[randIm][3:6]-params[randIm][3:6])**2

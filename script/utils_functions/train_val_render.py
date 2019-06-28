@@ -115,7 +115,7 @@ def train_render(model, train_dataloader, test_dataloader,
             y_loss = nn.MSELoss()(predicted_params[:, 4], parameter[:, 4])
             z_loss = nn.MSELoss()(predicted_params[:, 5], parameter[:, 5])
 
-            loss.backward()  # multiple times accumulates the gradient (by addition) for each parameter
+            # loss.backward()  # multiple times accumulates the gradient (by addition) for each parameter
             optimizer.step()  # performs a parameter update based on the current gradient, SGD is used here
 
             parameters.extend(parameter.cpu().numpy())  # append ground truth label

@@ -101,7 +101,7 @@ test_dataloader = DataLoader(test_dataset, batch_size=4, shuffle=False, num_work
 #  ------------------------------------------------------------------
 
 # for noise in np.arange(0, 1, 0.1):
-noise = 0.5
+noise = 0.0
 model = resnet50(cifar=True) #train with the pretrained parameter from cifar database
 # model = resnet50_multCPU(cifar=True)
 model = model.to(device)  # transfer the neural net onto the GPU

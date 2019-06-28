@@ -11,7 +11,7 @@ def limit(param):
     low_limit = 5
     if param < low_limit or param > up_limit:
         # print('param out of range was restricted')
-        if torch.abs(param-low_limit) < torch.abs(param-low_limit):
+        if torch.abs(param-low_limit) < torch.abs(param-up_limit):
             return low_limit
         else:
             return up_limit
