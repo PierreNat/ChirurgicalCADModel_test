@@ -39,8 +39,8 @@ params = np.load(parameters_file)
 
 
 #  ------------------------------------------------------------------
-test_length = 1000
-batch_size = 6
+test_length = 20
+batch_size = 5
 
 test_im = cubes[:test_length]
 test_sil = sils[:test_length]
@@ -124,8 +124,15 @@ print("computing prediction done in  {} seconds ---".format(time.time() - start_
 
 
 obj_name = 'wrist'
+ncols = 5
+nrows = 2
+Gt = []
+Rdr = []
+nb_im =5
 
-nb_im = 7
+fig = plt.figure()
+
+
 # loop = tqdm.tqdm(range(0,nb_im))
 for i in range(0,nb_im):
 
@@ -142,17 +149,31 @@ for i in range(0,nb_im):
 
 
     im = render_1_image(obj_name, torch.from_numpy(predicted_params[randIm]))  # create the dataset
+    Gt.append(test_im[randIm])
+    Rdr.append(im)
 
-
-    plt.subplot(2, nb_im, i+1)
+    a = plt.subplot(2, nb_im, i+1)
     plt.imshow(test_im[randIm])
-    plt.title('Ground truth cube {}'.format(i))
+    a.set_title('GT {}'.format(i))
 
-    plt.subplot(2, nb_im, i+1+nb_im)
+    a = plt.subplot(2, nb_im, i+1+nb_im)
     plt.imshow(im)
-    plt.title('Computed cube {}'.format(i))
+    a.set_title('Rdr {}'.format(i))
+
+    # plt.subplot(2, nb_im, i+1)
+    # plt.imshow(test_im[randIm])
+    # plt.title('GT {}'.format(i))
+    #
+    # plt.subplot(2, nb_im, i+1+nb_im)
+    # plt.imshow(im)
+    # plt.title('Rdr {}'.format(i))
 
 
-plt.show()
 print('finish')
+# ax = plt.gca()
+# ax.set_xticklabels([])
+# ax.set_yticklabels([])
+plt.savefig("image/GroundtruthVsRender.png")
+plt.close(fig)
+
 
