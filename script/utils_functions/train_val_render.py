@@ -84,11 +84,11 @@ def train_render(model, train_dataloader, test_dataloader,
             #predicted_param is a tensor with torch.size[batch, 6]
             predicted_params = model(image)  # run prediction; output <- vector containing  the 6 transformation params
 
-            m = nn.Sigmoid() #smooth function
-            predicted_params_Tsigmoid = m(predicted_params[:, 3:6]) #sigmoid function only on the Translation parameter of the batch
-            predicted_params[:, 3:6] = predicted_params_Tsigmoid  #create new array only for x y z value
-            predicted_params[:, 3:5] =  predicted_params[:, 3:5].clone()*(maxTXYval-minTXYval) + minTXYval  # rescale value to be between min max translation value allowed in x-y axis
-            predicted_params[:, 5] = predicted_params[:, 5].clone()*(maxTZval-minTZval) + minTZval         # rescale value to be at between min max translation value allowed in z axis
+            # m = nn.Sigmoid() #smooth function
+            # predicted_params_Tsigmoid = m(predicted_params[:, 3:6]) #sigmoid function only on the Translation parameter of the batch
+            # predicted_params[:, 3:6] = predicted_params_Tsigmoid  #create new array only for x y z value
+            # predicted_params[:, 3:5] =  predicted_params[:, 3:5].clone()*(maxTXYval-minTXYval) + minTXYval  # rescale value to be between min max translation value allowed in x-y axis
+            # predicted_params[:, 5] = predicted_params[:, 5].clone()*(maxTZval-minTZval) + minTZval         # rescale value to be at between min max translation value allowed in z axis
 
             # hard reset to 0 value that we don-t want to train
             # zero_array = torch.zeros(4, 5)
@@ -115,7 +115,7 @@ def train_render(model, train_dataloader, test_dataloader,
             y_loss = nn.MSELoss()(predicted_params[:, 4], parameter[:, 4])
             z_loss = nn.MSELoss()(predicted_params[:, 5], parameter[:, 5])
 
-            # loss.backward()  # multiple times accumulates the gradient (by addition) for each parameter
+            loss.backward()  # multiple times accumulates the gradient (by addition) for each parameter
             optimizer.step()  # performs a parameter update based on the current gradient, SGD is used here
 
             parameters.extend(parameter.cpu().numpy())  # append ground truth label

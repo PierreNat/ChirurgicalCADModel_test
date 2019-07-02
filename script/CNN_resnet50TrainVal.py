@@ -21,7 +21,7 @@ print(device)
 
 file_name_extension = 'wrist_10000_t'  # choose the corresponding database to use
 
-batch_size = 4
+batch_size = 12
 
 n_epochs = 1
 
@@ -35,7 +35,7 @@ fileExtension = 'firsttest' #string to ad at the end of the file
 
 cubeSetName = 'wrist_{}'.format(file_name_extension) #used to describe the document name
 
-date4File = '072619_{}'.format(fileExtension) #mmddyy
+date4File = '073019_{}'.format(fileExtension) #mmddyy
 
 
 cubes = np.load(cubes_file)
@@ -110,7 +110,7 @@ test_dataloader = DataLoader(test_dataset, batch_size=4, shuffle=False, num_work
 for noise in np.arange(0, 1, 0.1):
 
     # noise = 0.5
-    model = resnet50_multCPU(cifar=True) #use pretrained on imagenet if cifar is true
+    model = resnet50(cifar=True) #use pretrained on imagenet if cifar is true
     model = model.to(device)  # transfer the neural net onto the GPU
     criterion = nn.MSELoss() # define the loss (MSE, Crossentropy, Binarycrossentropy)
 

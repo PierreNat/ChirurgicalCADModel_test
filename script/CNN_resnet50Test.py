@@ -15,7 +15,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 torch.cuda.empty_cache()
 print(device)
 
-modelName = '062619_firsttest_TempModel_train_wrist_wrist_10000_t_batchsOf4img_0.0%noise_epochs_n0_firsttest_RegrOnly'
+modelName = 'Best_Model_translation/072619_firsttest_TempModel_train_wrist_wrist_10000_t_batchsOf6img_0.0%noise_epochs_n14_firsttest_RegrOnly'
 
 
 file_name_extension = 'wrist_10000_t'
@@ -33,8 +33,8 @@ params = np.load(parameters_file)
 
 
 #  ------------------------------------------------------------------
-test_length = 1000
-batch_size = 6
+test_length = 100
+batch_size = 5
 
 test_im = cubes[:test_length]
 test_sil = sils[:test_length]
@@ -103,15 +103,15 @@ test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False,
 #  ------------------------------------------------------------------
 
 
-model = resnet50_multCPU(cifar=False, modelName=modelName) #train with the saved model from the training script
+model = resnet50(cifar=False, modelName=modelName) #train with the saved model from the training script
 model = model.to(device)  # transfer the neural net onto the GPU
 criterion = nn.MSELoss()
 
 #  ------------------------------------------------------------------
 
 # test the model
-epochsValLoss = open(
-    "./results/TestProtocol_{}_regressionOnly.txt".format(file_name_extension), "w+")
+print("Start timer")
+start_time = time.time()
 parameters, predicted_params, test_losses, al, bl, gl, xl, yl, zl = testResnet(model, test_dataloader, criterion, file_name_extension, device)
 
 
@@ -121,7 +121,8 @@ parameters, predicted_params, test_losses, al, bl, gl, xl, yl, zl = testResnet(m
 
 obj_name = 'wrist'
 
-nb_im = 7
+nb_im = 5
+fig = plt.figure()
 # loop = tqdm.tqdm(range(0,nb_im))
 for i in range(0,nb_im):
 
@@ -139,16 +140,29 @@ for i in range(0,nb_im):
 
     im = render_1_image(obj_name, torch.from_numpy(predicted_params[randIm]))  # create the dataset
 
-
-    plt.subplot(2, nb_im, i+1)
+    a = plt.subplot(2, nb_im, i+1)
     plt.imshow(test_im[randIm])
-    plt.title('Ground truth cube {}'.format(i))
-
-    plt.subplot(2, nb_im, i+1+nb_im)
+    a.set_title('GT {}'.format(i))
+    plt.xticks([0, 500])
+    plt.yticks([],)
+    a = plt.subplot(2, nb_im, i+1+nb_im)
     plt.imshow(im)
-    plt.title('Computed cube {}'.format(i))
+    a.set_title('Rdr {}'.format(i))
+    plt.xticks([0, 500])
+    plt.yticks([])
+
+    # plt.subplot(2, nb_im, i+1)
+    # plt.imshow(test_im[randIm])
+    # plt.title('Ground truth cube {}'.format(i))
+    #
+    # plt.subplot(2, nb_im, i+1+nb_im)
+    # plt.imshow(im)
+    # plt.title('Computed cube {}'.format(i))
 
 
-plt.show()
+
 print('finish')
-
+plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.1, hspace=None)
+plt.tight_layout()
+plt.savefig("image/GroundtruthVsRegressionTestT.png")
+plt.close(fig)

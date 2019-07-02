@@ -9,6 +9,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 import tqdm
+import  matplotlib
 import matplotlib.pyplot as plt
 
 from utils_functions.render1item import render_1_image
@@ -21,7 +22,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 torch.cuda.empty_cache()
 print(device)
 
-modelName = '060419_Sigmoidconstr_lim7_10_FinalModel_train_cubes_wrist_10000_t_12_batchs_1_epochs_Sigmoidconstr_lim7_10_RenderRegr'
+modelName = 'Best_Model_translation/070119_Wrist_test_TempModel_train_cubes_wrist_10000_t_batchsOf7img_0.0%noise_epochs_n2_Wrist_test_RenderRegr'
 
 file_name_extension = 'wrist_10000_t'
 
@@ -39,7 +40,7 @@ params = np.load(parameters_file)
 
 
 #  ------------------------------------------------------------------
-test_length = 20
+test_length = 100
 batch_size = 5
 
 test_im = cubes[:test_length]
@@ -135,7 +136,7 @@ fig = plt.figure()
 
 # loop = tqdm.tqdm(range(0,nb_im))
 for i in range(0,nb_im):
-
+    plt.title('Rendering')
     randIm = i+6 #select a random image
     print('computed parameter_{}: '.format(i+1))
     print(predicted_params[randIm])
@@ -149,16 +150,20 @@ for i in range(0,nb_im):
 
 
     im = render_1_image(obj_name, torch.from_numpy(predicted_params[randIm]))  # create the dataset
+
     Gt.append(test_im[randIm])
     Rdr.append(im)
 
     a = plt.subplot(2, nb_im, i+1)
     plt.imshow(test_im[randIm])
     a.set_title('GT {}'.format(i))
-
+    plt.xticks([0, 500])
+    plt.yticks([])
     a = plt.subplot(2, nb_im, i+1+nb_im)
     plt.imshow(im)
     a.set_title('Rdr {}'.format(i))
+    plt.xticks([0, 500])
+    plt.yticks([])
 
     # plt.subplot(2, nb_im, i+1)
     # plt.imshow(test_im[randIm])
@@ -170,10 +175,11 @@ for i in range(0,nb_im):
 
 
 print('finish')
-# ax = plt.gca()
-# ax.set_xticklabels([])
-# ax.set_yticklabels([])
-plt.savefig("image/GroundtruthVsRender.png")
+
+
+plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.1, hspace=None)
+plt.tight_layout()
+plt.savefig("image/GroundtruthVsRenderTestT.png")
 plt.close(fig)
 
 

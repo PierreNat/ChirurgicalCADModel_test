@@ -25,7 +25,7 @@ def main():
     print(vertices_1.shape)
     print(faces_1.shape)
 
-    file_name_extension = 'wrist_10000_t2'
+    file_name_extension = 'wrist_10000_Rt'
     nb_im = 10000
     #init and create renderer object
     R = np.array([np.radians(0), np.radians(0), np.radians(0)])  # angle in degree
@@ -41,12 +41,12 @@ def main():
     loop = tqdm.tqdm(range(0, nb_im))
     for i in loop:
         # define transfomration parameter randomly uniform
-        alpha = 0 #uniform(0, 180)
-        beta =   0 #uniform(0, 180)
-        gamma = 0  #uniform(0, 180)
+        alpha = uniform(0, 180)
+        beta =  uniform(0, 180)
+        gamma = uniform(0, 180)
         x = uniform(-2, 2)
         y = uniform(-2, 2)
-        z = uniform(7, 10)
+        z = uniform(5, 10) #1000t was done with value between 7 and 10, Rot and trans between 5 10
         R = np.array([np.radians(alpha), np.radians(beta), np.radians(gamma)])  # angle in degree
         t = np.array([x, y, z])  # translation in meter
 
@@ -81,15 +81,15 @@ def main():
 
 
 
-        if(im_nr%1 == 0):
-            fig = plt.figure()
-            fig.add_subplot(1, 2, 1)
-            plt.imshow(image)
-
-            fig.add_subplot(1, 2, 2)
-            plt.imshow(sil, cmap='gray')
-            plt.show()
-            plt.close(fig)
+        # if(im_nr%1 == 0):
+        #     fig = plt.figure()
+        #     fig.add_subplot(1, 2, 1)
+        #     plt.imshow(image)
+        #
+        #     fig.add_subplot(1, 2, 2)
+        #     plt.imshow(sil, cmap='gray')
+        #     plt.show()
+        #     plt.close(fig)
 
 # save database
 # reshape in the form (nbr of image, x dim, y dim, layers)

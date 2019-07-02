@@ -20,11 +20,11 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 torch.cuda.empty_cache()
 print(device)
 
-file_name_extension = 'wrist_10000_t'  # choose the corresponding database to use
+file_name_extension = 'wrist_10000_Rt'  # choose the corresponding database to use
 
-batch_size = 12
+batch_size = 7
 
-n_epochs = 1
+n_epochs = 4
 
 target_size = (512, 512)
 
@@ -33,13 +33,13 @@ cubes_file = 'Npydatabase/cubes_{}.npy'.format(file_name_extension)
 silhouettes_file = 'Npydatabase/sils_{}.npy'.format(file_name_extension)
 parameters_file = 'Npydatabase/params_{}.npy'.format(file_name_extension)
 
-fileExtension = 'Sigmoidconstr_lim7_10' #string to ad at the end of the file
+fileExtension = 'Wrist_test' #string to ad at the end of the file
 
 cubeSetName = 'cubes_{}'.format(file_name_extension) #used to describe the document name
 
-date4File = '060419_{}'.format(fileExtension) #mmddyy
+date4File = '070219_{}'.format(fileExtension) #mmddyy
 
-obj_name = 'rubik_color'
+obj_name = 'wrist'
 
 cubes = np.load(cubes_file)
 sils = np.load(silhouettes_file)
