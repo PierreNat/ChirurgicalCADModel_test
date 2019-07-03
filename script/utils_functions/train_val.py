@@ -74,11 +74,12 @@ def train(model, train_dataloader, test_dataloader, n_epochs, loss_function, dat
             parameter = parameter.to(device)
             predicted_params = model(image)  # run prediction
             # predicted_params[:,1] = 0
-            m = nn.Sigmoid() #smooth function
-            predicted_params_Tsigmoid = m(predicted_params[:, 3:6]) #sigmoid function only on the Translation parameter of the batch
-            predicted_params[:, 3:6] = predicted_params_Tsigmoid  #create new array only for x y z value
-            predicted_params[:, 3:5] = predicted_params[:, 3:5].clone()*(maxTXYval-minTXYval) + minTXYval  # rescale value to be between min max translation value allowed in x-y axis
-            predicted_params[:, 5] = predicted_params[:, 5].clone()*(maxTZval-minTZval)+minTZval         # rescale value to be at between min max translation value allowed in z axis
+
+            # m = nn.Sigmoid() #smooth function
+            # predicted_params_Tsigmoid = m(predicted_params[:, 3:6]) #sigmoid function only on the Translation parameter of the batch
+            # predicted_params[:, 3:6] = predicted_params_Tsigmoid  #create new array only for x y z value
+            # predicted_params[:, 3:5] = predicted_params[:, 3:5].clone()*(maxTXYval-minTXYval) + minTXYval  # rescale value to be between min max translation value allowed in x-y axis
+            # predicted_params[:, 5] = predicted_params[:, 5].clone()*(maxTZval-minTZval)+minTZval         # rescale value to be at between min max translation value allowed in z axis
 
             # zero the parameter gradients
             optimizer.zero_grad()
@@ -137,7 +138,7 @@ def train(model, train_dataloader, test_dataloader, n_epochs, loss_function, dat
                                                                                             fileExtension))
         print('parameters saved for epoch {}'.format(epoch))
 
-        #validation phase after the training
+        # validation phase after the training
         print('test phase epoch {}'.format(epoch))
         model.eval()
         parameters, predicted_params, test_losses, al, bl, gl, xl, yl, zl = testResnet(model, test_dataloader, loss_function,

@@ -21,9 +21,9 @@ print(device)
 
 file_name_extension = 'wrist_10000_t'  # choose the corresponding database to use
 
-batch_size = 12
+batch_size = 7
 
-n_epochs = 1
+n_epochs = 15
 
 target_size = (512, 512)
 
@@ -31,11 +31,11 @@ cubes_file = 'Npydatabase/cubes_{}.npy'.format(file_name_extension)
 silhouettes_file = 'Npydatabase/sils_{}.npy'.format(file_name_extension)
 parameters_file = 'Npydatabase/params_{}.npy'.format(file_name_extension)
 
-fileExtension = 'firsttest' #string to ad at the end of the file
+fileExtension = 'okCorrection' #string to ad at the end of the file
 
 cubeSetName = 'wrist_{}'.format(file_name_extension) #used to describe the document name
 
-date4File = '073019_{}'.format(fileExtension) #mmddyy
+date4File = '070319_{}'.format(fileExtension) #mmddyy
 
 
 cubes = np.load(cubes_file)
@@ -107,16 +107,16 @@ test_dataloader = DataLoader(test_dataset, batch_size=4, shuffle=False, num_work
 
 #  ------------------------------------------------------------------
 
-for noise in np.arange(0, 1, 0.1):
+# for noise in np.arange(0, 1, 0.1):
 
-    # noise = 0.5
-    model = resnet50(cifar=True) #use pretrained on imagenet if cifar is true
-    model = model.to(device)  # transfer the neural net onto the GPU
-    criterion = nn.MSELoss() # define the loss (MSE, Crossentropy, Binarycrossentropy)
+noise = 0.0
+model = resnet50(cifar=True) #use pretrained on imagenet if cifar is true
+model = model.to(device)  # transfer the neural net onto the GPU
+criterion = nn.MSELoss() # define the loss (MSE, Crossentropy, Binarycrossentropy)
 
-    #  ------------------------------------------------------------------
+#  ------------------------------------------------------------------
 
-    all_Train_losses, all_Test_losses = train(model, train_dataloader, test_dataloader, n_epochs, criterion, date4File, cubeSetName, batch_size, fileExtension, device, noise)
+all_Train_losses, all_Test_losses = train(model, train_dataloader, test_dataloader, n_epochs, criterion, date4File, cubeSetName, batch_size, fileExtension, device, noise)
 
 #  ------------------------------------------------------------------
 

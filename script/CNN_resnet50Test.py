@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import numpy as np
+import time
 import tqdm
 import matplotlib.pyplot as plt
 
@@ -15,7 +16,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 torch.cuda.empty_cache()
 print(device)
 
-modelName = 'Best_Model_translation/072619_firsttest_TempModel_train_wrist_wrist_10000_t_batchsOf6img_0.0%noise_epochs_n14_firsttest_RegrOnly'
+modelName = 'Best_Model_translation/070319_testFail_TempModel_train_wrist_wrist_10000_t_batchsOf7img_0.0%noise_epochs_n2_testFail_RegrOnly'
 
 
 file_name_extension = 'wrist_10000_t'
