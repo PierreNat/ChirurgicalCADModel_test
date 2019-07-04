@@ -22,10 +22,10 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 torch.cuda.empty_cache()
 print(device)
 
-modelName = 'Best_Model_translation/070119_Wrist_test_TempModel_train_cubes_wrist_10000_t_batchsOf7img_0.0%noise_epochs_n2_Wrist_test_RenderRegr'
-
-file_name_extension = 'wrist_10000_t'
-
+# modelName = 'Best_Model_translation/070119_Wrist_test_TempModel_train_cubes_wrist_10000_t_batchsOf7img_0.0%noise_epochs_n2_Wrist_test_RenderRegr'
+modelName = 'Best_Model_RotationTranslation/073019_ubelixtest_TempModel_train_cubes_wrist_10000_Rt_batchsOf7img_0.0%noise_epochs_n14_ubelixtest_RenderRegr'
+# file_name_extension = 'wrist_10000_t'
+file_name_extension = 'wrist_10000_Rt'
 
 cubes_file = 'Npydatabase/cubes_{}.npy'.format(file_name_extension)
 silhouettes_file = 'Npydatabase/sils_{}.npy'.format(file_name_extension)
@@ -179,7 +179,7 @@ print('finish')
 
 plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.1, hspace=None)
 plt.tight_layout()
-plt.savefig("image/GroundtruthVsRenderTestT.png")
+plt.savefig("image/GroundtruthVsRenderTestRt_render.png")
 plt.close(fig)
 
 
