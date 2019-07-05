@@ -5,6 +5,7 @@ from numpy.random import uniform
 import neural_renderer as nr
 import matplotlib.pyplot as plt
 import tqdm
+import matplotlib.image as mpimg
 from utils_functions.camera_settings import camera_setttings
 
 def main():
@@ -25,14 +26,18 @@ def main():
     print(vertices_1.shape)
     print(faces_1.shape)
 
-    file_name_extension = 'report'
+    file_name_extension = 'withBackground'
+    backgroundImg = mpimg.imread("3D_objects/background1.jpg")
+
+    cropedbackgroundImg = backgroundImg[0:512, 0:512, :]
+
     nb_im = 10000
     #init and create renderer object
     R = np.array([np.radians(0), np.radians(0), np.radians(0)])  # angle in degree
     t = np.array([0, 0, 0])  # translation in meter
     cam = camera_setttings(R=R, t=t, vert=nb_vertices)
     renderer = nr.Renderer(image_size=512, camera_mode='projection', dist_coeffs=None,
-                           K=cam.K_vertices, R=cam.R_vertices, t=cam.t_vertices, near=1, background_color=[1, 1, 1], #background is filled now with  value 0-1 instead of 0-255
+                           K=cam.K_vertices, R=cam.R_vertices, t=cam.t_vertices, near=1, background_color=[0, 0, 0], #background is filled now with  value 0-1 instead of 0-255
                            # changed from 0-255 to 0-1
                            far=1000, orig_size=512,
                            light_intensity_ambient=1.0, light_intensity_directional=0, light_direction=[0, 1, 0],
@@ -79,7 +84,11 @@ def main():
 
         im_nr = im_nr+1
 
-
+        BinarySil3layermask = (np.array([sil, sil,sil])).transpose((1, 2, 0))/255
+        # plt.imshow(BinarySil3layermask)
+        maskedbackground = np.multiply((BinarySil3layermask *-1+1), cropedbackgroundImg/255)
+        imWithBackground = (image + (maskedbackground*255)).astype(np.uint8)
+        plt.imshow(imWithBackground)
 
         if(im_nr%1 == 0):
             fig = plt.figure()
