@@ -20,7 +20,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 torch.cuda.empty_cache()
 print(device)
 
-file_name_extension = 'wrist_10000_t'  # choose the corresponding database to use
+file_name_extension = 'wrist_10000_Rt'  # choose the corresponding database to use
 
 batch_size = 7
 
@@ -33,7 +33,7 @@ cubes_file = 'Npydatabase/cubes_{}.npy'.format(file_name_extension)
 silhouettes_file = 'Npydatabase/sils_{}.npy'.format(file_name_extension)
 parameters_file = 'Npydatabase/params_{}.npy'.format(file_name_extension)
 
-fileExtension = 'RenderSuiteto30epochs' #string to ad at the end of the file
+fileExtension = 'BCEloss' #string to ad at the end of the file
 
 cubeSetName = 'cubes_{}'.format(file_name_extension) #used to describe the document name
 
@@ -42,7 +42,7 @@ date4File = '070519_{}'.format(fileExtension) #mmddyy
 obj_name = 'wrist'
 
 #the following line is used to recall resnet parameter
-modelName = 'Best_Model_RotationTranslation/073019_ubelixtest_TempModel_train_cubes_wrist_10000_Rt_batchsOf7img_0.0%noise_epochs_n14_ubelixtest_RenderRegr'
+modelName = '070519_part2_30epochs_TempModel_train_cubes_wrist_10000_Rt_batchsOf7img_0.0%noise_epochs_n8_part2_30epochs_RenderRegr'
 
 
 cubes = np.load(cubes_file)
@@ -106,8 +106,8 @@ test_dataloader = DataLoader(test_dataset, batch_size=4, shuffle=False, num_work
 
 # for noise in np.arange(0, 1, 0.1):
 noise = 0.0
-model = resnet50(cifar=False, modelName=modelName) #train with the saved model from the training script
-# model = resnet50(cifar=True) #train with the pretrained parameter from cifar database
+# model = resnet50(cifar=False, modelName=modelName) #train with the saved model from the training script
+model = resnet50(cifar=True) #train with the pretrained parameter from cifar database
 # model = resnet50_multCPU(cifar=True)
 model = model.to(device)  # transfer the neural net onto the GPU
 criterion = nn.MSELoss()  #nn.BCELoss()   #nn.CrossEntropyLoss()  define the loss (MSE, Crossentropy, Binarycrossentropy)

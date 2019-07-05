@@ -17,7 +17,7 @@ torch.cuda.empty_cache()
 print(device)
 
 # modelName = 'Best_Model_translation/070319_testFail_TempModel_train_wrist_wrist_10000_t_batchsOf7img_0.0%noise_epochs_n2_testFail_RegrOnly'
-modelName = 'Best_Model_RotationTranslation/070319_TranRot_TempModel_train_wrist_wrist_10000_Rt_batchsOf7img_0.0%noise_epochs_n14_TranRot_RegrOnly'
+modelName = '070419_RegressionconvergenceTest_TempModel_train_wrist_wrist_10000_Rt_batchsOf12img_0.0%noise_epochs_n29_RegressionconvergenceTest_RegrOnly'
 
 # file_name_extension = 'wrist_10000_t'
 file_name_extension = 'wrist_10000_Rt'
@@ -149,7 +149,7 @@ for i in range(0,nb_im):
     plt.yticks([],)
     a = plt.subplot(2, nb_im, i+1+nb_im)
     plt.imshow(im)
-    a.set_title('Rdr {}'.format(i))
+    a.set_title('Rgr {}'.format(i))
     plt.xticks([0, 500])
     plt.yticks([])
 
@@ -166,5 +166,5 @@ for i in range(0,nb_im):
 print('finish')
 plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.1, hspace=None)
 plt.tight_layout()
-plt.savefig("image/GroundtruthVsRenderTestRt_regression.png")
+plt.savefig("image/GroundtruthVsRenderTestRt_regression2.png")
 plt.close(fig)
