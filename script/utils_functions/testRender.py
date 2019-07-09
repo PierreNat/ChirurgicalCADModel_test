@@ -19,6 +19,7 @@ def testRenderResnet(model, test_dataloader, loss_function, file_name_extension,
     steps_x_loss = []
     steps_y_loss = []
     steps_z_loss = []
+    # epochsTrainLoss = open("epochsTestLoss_epoch_{}_RenderRegr.txt".format(count), "w+")
 
     for image, silhouette, parameter in loop:
         image = image.to(device)  # we have to send the inputs and targets at every step to the GPU too

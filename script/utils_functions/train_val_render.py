@@ -33,7 +33,7 @@ def train_render(model, train_dataloader, test_dataloader,
     #contains 1 value per epoch for global loss, alpha , beta, gamma ,x, y, z validation loss
     epochsValLoss = open("./results/epochsValLoss_{}_{}_batchsOf{}img_{:.1f}%noise_{}epochs_RenderRegr.txt".format(date4File, cubeSetName, str(batch_size),  noise*100,  str(n_epochs), fileExtension), "w+")
     # contains 1 value per epoch for global loss, alpha , beta, gamma ,x, y, z training loss
-    epochsTrainLoss = open("./results/epochsTrainLoss_{}_{}_batchsOf{}img_{:.1f}%noise_{}epochs__RenderRegr.txt".format(date4File, cubeSetName, str(batch_size), noise*100, str(n_epochs), fileExtension), "w+")
+    epochsTrainLoss = open("./results/epochsTrainLoss_{}_{}_batchsOf{}img_{:.1f}%noise_{}epochs_RenderRegr.txt".format(date4File, cubeSetName, str(batch_size), noise*100, str(n_epochs), fileExtension), "w+")
     # contains n steps value for global loss, alpha , beta, gamma ,x, y, z training loss
     stepsTrainLoss = open("./results/stepsTrainLoss_{}_{}_batchsOf{}img_{:.1f}%noise_{}epochs_RenderRegr.txt".format(date4File, cubeSetName, str(batch_size), noise*100, str(n_epochs), fileExtension), "w+")
 
@@ -105,8 +105,8 @@ def train_render(model, train_dataloader, test_dataloader,
             optimizer.zero_grad()
 
             # object, predicted, ground truth, loss , cuda , and bool for printing logic
-            loss_function2 = nn.BCELoss()
-            loss = renderBatchSil(obj_name, predicted_params, parameter, loss_function2, device, plot)
+            # loss_function2 = nn.BCELoss()
+            loss = renderBatchSil(obj_name, predicted_params, parameter, loss_function, device, plot)
 
             #one value each for the step, compute mse loss for all parameters separately
             alpha_loss = nn.MSELoss()(predicted_params[:, 0], parameter[:, 0])
@@ -131,12 +131,12 @@ def train_render(model, train_dataloader, test_dataloader,
             steps_z_loss.append(z_loss.item())
 
             print(
-                'step: {}/{} current step loss: {:.4f}, angle loss: {:.4f} {:.4f} {:.4f} translation loss: {:.4f} {:.4f} {:.4f} '
+                'step: {}/{} current MSE loss btw silhouettes: {:.4f}, MSE angle loss: {:.4f} {:.4f} {:.4f} MSE translation loss: {:.4f} {:.4f} {:.4f} '
                 .format(count, len(loop), loss, alpha_loss, beta_loss, gamma_loss, x_loss, y_loss, z_loss))
 
             #  save current step value for each parameter
             stepsTrainLoss.write(
-                'step: {}/{} current step loss: {:.4f}, angle loss: {:.4f} {:.4f} {:.4f} translation loss: {:.4f} {:.4f} {:.4f}  \r\n'
+                'step: {}/{} current MSE loss btw silhouettes: {:.4f}, MSE angle loss: {:.4f} {:.4f} {:.4f}  MSE translation loss: {:.4f} {:.4f} {:.4f}  \r\n'
                 .format(count, len(loop), loss, alpha_loss, beta_loss, gamma_loss, x_loss, y_loss, z_loss))
 
             count = count + 1
@@ -152,7 +152,7 @@ def train_render(model, train_dataloader, test_dataloader,
         all_Train_losses.append(this_epoch_loss)  # will contain 1 loss per epoch
 
         epochsTrainLoss.write(
-            'loss for epoch {} global {:.4f} angle loss: {:.4f} {:.4f} {:.4f} translation loss: {:.4f} {:.4f} {:.4f}  \r\n'
+            'MSE loss btw silhouette for epoch {} is: {:.4f} MSE angle loss: {:.4f} {:.4f} {:.4f} MSE translation loss: {:.4f} {:.4f} {:.4f}  \r\n'
             .format(epoch, this_epoch_loss, this_epoch_loss_alpha, this_epoch_loss_beta, this_epoch_loss_gamma,
                     this_epoch_loss_x, this_epoch_loss_y, this_epoch_loss_z))
 

@@ -110,11 +110,11 @@ def train(model, train_dataloader, test_dataloader, n_epochs, loss_function, dat
             steps_z_loss.append(z_loss.item())
 
 
-            print('step: {}/{} current step loss: {:.4f}, angle loss: {:.4f} {:.4f} {:.4f} translation loss: {:.4f} {:.4f} {:.4f} '
+            print('step: {}/{} current MSE step loss: {:.4f}, MSE angle loss: {:.4f} {:.4f} {:.4f} MSE translation loss: {:.4f} {:.4f} {:.4f} '
                     .format(count, len(loop), loss, alpha_loss, beta_loss, gamma_loss, x_loss,y_loss, z_loss))
 
             #  save current step value for each parameter
-            stepsTrainLoss.write('step: {}/{} current step loss: {:.4f}, angle loss: {:.4f} {:.4f} {:.4f} translation loss: {:.4f} {:.4f} {:.4f}  \r\n'
+            stepsTrainLoss.write('step: {}/{} MSE current step loss: {:.4f}, MSE angle loss: {:.4f} {:.4f} {:.4f} MSE translation loss: {:.4f} {:.4f} {:.4f}  \r\n'
                     .format(count, len(loop), loss, alpha_loss, beta_loss, gamma_loss, x_loss, y_loss, z_loss))
 
             count = count + 1
@@ -128,7 +128,7 @@ def train(model, train_dataloader, test_dataloader, n_epochs, loss_function, dat
         this_epoch_loss_z = np.mean(np.array(steps_z_loss))
 
         all_Train_losses.append(this_epoch_loss)  # will contain 1 loss per epoch
-        epochsTrainLoss.write('loss for epoch {} global {:.4f} angle loss: {:.4f} {:.4f} {:.4f} translation loss: {:.4f} {:.4f} {:.4f}  \r\n'
+        epochsTrainLoss.write('loss for epoch {} MSE global {:.4f} MSE angle loss: {:.4f} {:.4f} {:.4f} MSE translation loss: {:.4f} {:.4f} {:.4f}  \r\n'
                               .format(epoch, this_epoch_loss,this_epoch_loss_alpha, this_epoch_loss_beta, this_epoch_loss_gamma,
                                       this_epoch_loss_x, this_epoch_loss_y, this_epoch_loss_z))
 

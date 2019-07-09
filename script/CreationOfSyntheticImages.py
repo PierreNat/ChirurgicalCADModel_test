@@ -6,6 +6,7 @@ import neural_renderer as nr
 import matplotlib.pyplot as plt
 import tqdm
 import matplotlib.image as mpimg
+import random
 from utils_functions.camera_settings import camera_setttings
 
 def main():
@@ -26,10 +27,12 @@ def main():
     print(vertices_1.shape)
     print(faces_1.shape)
 
-    file_name_extension = 'withBackground'
+    file_name_extension = 'WristwithMovingBackground_test'
     backgroundImg = mpimg.imread("3D_objects/background1.jpg")
 
-    cropedbackgroundImg = backgroundImg[0:512, 0:512, :]
+    sx = backgroundImg.shape[0]
+    sy = backgroundImg.shape[1]
+
 
     nb_im = 10000
     #init and create renderer object
@@ -78,7 +81,7 @@ def main():
         sil = np.squeeze((sil * 255)).astype(np.uint8) # change from float 0-1 [512,512,1] to uint8 0-255 [512,512]
 
         #grow the list of cube, silhouette and parameters
-        cubes_database.extend(image)
+
         sils_database.extend(sil)
         params_database.extend(Rt)
 
@@ -86,9 +89,16 @@ def main():
 
         BinarySil3layermask = (np.array([sil, sil,sil])).transpose((1, 2, 0))/255
         # plt.imshow(BinarySil3layermask)
+
+        moveX = random.randint(0,sx-512)
+        moveY = random.randint(0,sy-512)
+        print(moveX, moveY)
+        cropedbackgroundImg = backgroundImg[moveX:moveX+512, moveY:moveY+512, :]
         maskedbackground = np.multiply((BinarySil3layermask *-1+1), cropedbackgroundImg/255)
         imWithBackground = (image + (maskedbackground*255)).astype(np.uint8)
-        plt.imshow(imWithBackground)
+        # plt.imshow(imWithBackground)
+        image = imWithBackground
+        cubes_database.extend(image)
 
         if(im_nr%1 == 0):
             fig = plt.figure()

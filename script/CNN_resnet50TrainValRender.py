@@ -20,11 +20,11 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 torch.cuda.empty_cache()
 print(device)
 
-file_name_extension = 'wrist_10000_Rt'  # choose the corresponding database to use
+file_name_extension = 'WristwithBackground'  # choose the corresponding database to use
 
-batch_size = 7
+batch_size = 5
 
-n_epochs = 15
+n_epochs = 1
 
 target_size = (512, 512)
 
@@ -33,11 +33,11 @@ cubes_file = 'Npydatabase/cubes_{}.npy'.format(file_name_extension)
 silhouettes_file = 'Npydatabase/sils_{}.npy'.format(file_name_extension)
 parameters_file = 'Npydatabase/params_{}.npy'.format(file_name_extension)
 
-fileExtension = 'BCEloss' #string to ad at the end of the file
+fileExtension = 'test' #string to ad at the end of the file
 
 cubeSetName = 'cubes_{}'.format(file_name_extension) #used to describe the document name
 
-date4File = '070519_{}'.format(fileExtension) #mmddyy
+date4File = '070919_{}'.format(fileExtension) #mmddyy
 
 obj_name = 'wrist'
 
@@ -81,7 +81,7 @@ train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True
 val_dataloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=True, num_workers=2)
 test_dataloader = DataLoader(test_dataset, batch_size=4, shuffle=False, num_workers=2)
 
-#
+
 # for image, sil, param in train_dataloader:
 #
 # #plot silhouette
@@ -120,7 +120,7 @@ train_losses, all_Test_losses = train_render(model, train_dataloader, test_datal
 
 #  ------------------------------------------------------------------
 
-torch.save(model.state_dict(), 'models/{}_FinalModel_train_{}_{}_batchs_{}_epochs_{}_RenderRegr.pth'.format(date4File, cubeSetName, str(batch_size), str(n_epochs), fileExtension))
+torch.save(model.state_dict(), 'models/{}_FinalModel_train_{}_{}batchs_{}epochs_Noise{}_{}_RenderRegr.pth'.format(date4File, cubeSetName, str(batch_size), str(n_epochs), noise*100,fileExtension))
 print('parameters saved')
 
 #  ------------------------------------------------------------------

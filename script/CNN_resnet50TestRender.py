@@ -24,8 +24,10 @@ print(device)
 
 # modelName = 'Best_Model_translation/070119_Wrist_test_TempModel_train_cubes_wrist_10000_t_batchsOf7img_0.0%noise_epochs_n2_Wrist_test_RenderRegr'
 modelName = '070519_part3_30epochs_TempModel_train_cubes_wrist_10000_Rt_batchsOf7img_0.0%noise_epochs_n1_part3_30epochs_RenderRegr'
+modelName = 'Best_Model_RealBackground/070619_Ubelix_realBackgroundtest_render_part1_TempModel_train_cubes_WristwithBackground_batchsOf20img_0.0%noise_epochs_n15_Ubelix_realBackgroundtest_render_part1_RenderRegr'
 # file_name_extension = 'wrist_10000_t'
 file_name_extension = 'wrist_10000_Rt'
+file_name_extension ='WristwithBackground'
 
 cubes_file = 'Npydatabase/cubes_{}.npy'.format(file_name_extension)
 silhouettes_file = 'Npydatabase/sils_{}.npy'.format(file_name_extension)
@@ -136,10 +138,10 @@ fig = plt.figure()
 
 # loop = tqdm.tqdm(range(0,nb_im))
 for i in range(0, nb_im):
-    randIm = i+6 #select a random image
-    print('computed parameter_{}: '.format(i+1))
+    randIm = i+20 #select a random image
+    print('computed parameter_{}: '.format(i))
     print(predicted_params[randIm])
-    print('ground truth parameter_{}: '.format(i+1))
+    print('ground truth parameter_{}: '.format(i))
     print(params[randIm])
     print('angle and translation MSE loss for {}: '.format(i))
     loss_angle = (predicted_params[randIm][0:3] - params[randIm][0:3])**2
@@ -178,7 +180,7 @@ print('finish')
 
 plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.1, hspace=None)
 plt.tight_layout()
-plt.savefig("image/GroundtruthVsRenderTestRt_render2.png")
+plt.savefig("image/GroundtruthVsRenderTestRt_realbackground_rend.png")
 plt.close(fig)
 
 
