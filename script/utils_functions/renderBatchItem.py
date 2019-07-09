@@ -13,14 +13,13 @@ def renderBatchSil(Obj_Name, predicted_params, ground_Truth, loss_function, devi
     # ground_Truth[:][5] = ground_Truth[:][5]+ torch.randn(1).uniform_(0, 1)
     nbrOfParam = predicted_params.size()[0]
     nb_im = nbrOfParam
-    print(nb_im)
+    # print(nb_im)
     loss = 0
-    count = 0
 
     for i in range(0, nbrOfParam):
         # define extrinsic parameter
         # predicted_params[i] = np.array([0, 0, 0, 2, 0.5*i, 8]) #test to enforce defined parameter
-        print(i)
+        # print(i)
         sil_cp = render_1_sil(Obj_Name, predicted_params[i])
 
 

@@ -49,7 +49,8 @@ def train_render(model, train_dataloader, test_dataloader,
 
         parameters = []  # ground truth labels
         predict_params = []  # predicted labels
-        steps_losses = []  # contains the loss after each steps
+        steps_losses = []  # contains the loss between silhouette after each steps
+        steps_losses_MSE =[] # contains the loss mse computed with the  computed parameter and ground truth parameter
         steps_alpha_loss = []
         steps_beta_loss = []
         steps_gamma_loss = []
@@ -106,9 +107,10 @@ def train_render(model, train_dataloader, test_dataloader,
 
             # object, predicted, ground truth, loss , cuda , and bool for printing logic
             # loss_function2 = nn.BCELoss()
-            loss = renderBatchSil(obj_name, predicted_params, parameter, loss_function, device, plot)
+            loss = renderBatchSil(obj_name, predicted_params, parameter, loss_function, device, plot) # loss between silhouette, mse or bce loss
 
             #one value each for the step, compute mse loss for all parameters separately
+            lossMSE = loss_function(predicted_params, parameter)  # loss computed with computed value and ground truth
             alpha_loss = nn.MSELoss()(predicted_params[:, 0], parameter[:, 0])
             beta_loss = nn.MSELoss()(predicted_params[:, 1], parameter[:, 1])
             gamma_loss = nn.MSELoss()(predicted_params[:, 2], parameter[:, 2])
@@ -122,7 +124,8 @@ def train_render(model, train_dataloader, test_dataloader,
             parameters.extend(parameter.cpu().numpy())  # append ground truth label
             predict_params.extend(predicted_params.detach().cpu().numpy())  # append computed parameters
 
-            steps_losses.append(loss.item())  # only one loss value is add each step
+            steps_losses.append(loss.item())  # loss between silhouette, mse or bce loss
+            steps_losses_MSE.append(lossMSE.item())  # loss computed with computed value and ground truth
             steps_alpha_loss.append(alpha_loss.item())
             steps_beta_loss.append(beta_loss.item())
             steps_gamma_loss.append(gamma_loss.item())
@@ -131,17 +134,18 @@ def train_render(model, train_dataloader, test_dataloader,
             steps_z_loss.append(z_loss.item())
 
             print(
-                'step: {}/{} current MSE loss btw silhouettes: {:.4f}, MSE angle loss: {:.4f} {:.4f} {:.4f} MSE translation loss: {:.4f} {:.4f} {:.4f} '
-                .format(count, len(loop), loss, alpha_loss, beta_loss, gamma_loss, x_loss, y_loss, z_loss))
+                'step: {}/{} current MSE loss : {:.4f}, MSE angle loss: {:.4f} {:.4f} {:.4f} MSE translation loss: {:.4f} {:.4f} {:.4f} '
+                .format(count, len(loop), lossMSE, alpha_loss, beta_loss, gamma_loss, x_loss, y_loss, z_loss))
 
             #  save current step value for each parameter
             stepsTrainLoss.write(
-                'step: {}/{} current MSE loss btw silhouettes: {:.4f}, MSE angle loss: {:.4f} {:.4f} {:.4f}  MSE translation loss: {:.4f} {:.4f} {:.4f}  \r\n'
-                .format(count, len(loop), loss, alpha_loss, beta_loss, gamma_loss, x_loss, y_loss, z_loss))
+                'step: {}/{} current MSE loss : {:.4f}, MSE angle loss: {:.4f} {:.4f} {:.4f}  MSE translation loss: {:.4f} {:.4f} {:.4f}  \r\n'
+                .format(count, len(loop), lossMSE, alpha_loss, beta_loss, gamma_loss, x_loss, y_loss, z_loss))
 
             count = count + 1
 
         this_epoch_loss = np.mean(np.array(steps_losses))
+        this_epoch_loss_MSE = np.mean(np.array(steps_losses_MSE))
         this_epoch_loss_alpha = np.mean(np.array(steps_alpha_loss))
         this_epoch_loss_beta = np.mean(np.array(steps_beta_loss))
         this_epoch_loss_gamma = np.mean(np.array(steps_gamma_loss))
@@ -152,8 +156,8 @@ def train_render(model, train_dataloader, test_dataloader,
         all_Train_losses.append(this_epoch_loss)  # will contain 1 loss per epoch
 
         epochsTrainLoss.write(
-            'MSE loss btw silhouette for epoch {} is: {:.4f} MSE angle loss: {:.4f} {:.4f} {:.4f} MSE translation loss: {:.4f} {:.4f} {:.4f}  \r\n'
-            .format(epoch, this_epoch_loss, this_epoch_loss_alpha, this_epoch_loss_beta, this_epoch_loss_gamma,
+            'MSE loss for epoch {} is: {:.4f} MSE angle loss: {:.4f} {:.4f} {:.4f} MSE translation loss: {:.4f} {:.4f} {:.4f}  \r\n'
+            .format(epoch, this_epoch_loss_MSE, this_epoch_loss_alpha, this_epoch_loss_beta, this_epoch_loss_gamma,
                     this_epoch_loss_x, this_epoch_loss_y, this_epoch_loss_z))
 
 
