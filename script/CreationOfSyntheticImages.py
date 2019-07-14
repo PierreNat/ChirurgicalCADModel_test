@@ -27,11 +27,8 @@ def main():
     print(vertices_1.shape)
     print(faces_1.shape)
 
-    file_name_extension = 'WristwithMovingBackground_test'
-    backgroundImg = mpimg.imread("3D_objects/background1.jpg")
+    file_name_extension = 'WristwithMultMovingBackground'
 
-    sx = backgroundImg.shape[0]
-    sy = backgroundImg.shape[1]
 
 
     nb_im = 10000
@@ -89,10 +86,15 @@ def main():
 
         BinarySil3layermask = (np.array([sil, sil,sil])).transpose((1, 2, 0))/255
         # plt.imshow(BinarySil3layermask)
+        numberbackground = random.randint(1,8)
+        backgroundImg = mpimg.imread("3D_objects/background{}.jpg".format(numberbackground))
+
+        sx = backgroundImg.shape[0]
+        sy = backgroundImg.shape[1]
 
         moveX = random.randint(0,sx-512)
         moveY = random.randint(0,sy-512)
-        print(moveX, moveY)
+        # print(moveX, moveY)
         cropedbackgroundImg = backgroundImg[moveX:moveX+512, moveY:moveY+512, :]
         maskedbackground = np.multiply((BinarySil3layermask *-1+1), cropedbackgroundImg/255)
         imWithBackground = (image + (maskedbackground*255)).astype(np.uint8)
@@ -100,15 +102,15 @@ def main():
         image = imWithBackground
         cubes_database.extend(image)
 
-        if(im_nr%1 == 0):
-            fig = plt.figure()
-            fig.add_subplot(1, 2, 1)
-            plt.imshow(image)
-
-            fig.add_subplot(1, 2, 2)
-            plt.imshow(sil, cmap='gray')
-            plt.show()
-            plt.close(fig)
+        # if(im_nr%1 == 0):
+        #     fig = plt.figure()
+        #     fig.add_subplot(1, 2, 1)
+        #     plt.imshow(image)
+        #
+        #     fig.add_subplot(1, 2, 2)
+        #     plt.imshow(sil, cmap='gray')
+        #     plt.show()
+        #     plt.close(fig)
 
 # save database
 # reshape in the form (nbr of image, x dim, y dim, layers)

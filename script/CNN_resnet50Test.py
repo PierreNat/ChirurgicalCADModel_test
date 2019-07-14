@@ -18,10 +18,10 @@ print(device)
 
 # modelName = 'Best_Model_translation/070319_testFail_TempModel_train_wrist_wrist_10000_t_batchsOf7img_0.0%noise_epochs_n2_testFail_RegrOnly'
 # modelName = '070419_RegressionconvergenceTest_TempModel_train_wrist_wrist_10000_Rt_batchsOf12img_0.0%noise_epochs_n29_RegressionconvergenceTest_RegrOnly'
-modelName = 'Best_Model_RealBackground/070619_Ubelix_realBackgroundtest_regression_TempModel_train_wrist_WristwithBackground_batchsOf20img_0.0%noise_epochs_n15_Ubelix_realBackgroundtest_regression_RegrOnly'
+modelName = 'Best_Model_RealMovingBackground/Ubelix_071119_Ubelix_WristwithMovingBackground_regression_FinalModel_train_wrist_WristwithMovingBackground_20batchs_10epochs_Noise0.0_Ubelix_WristwithMovingBackground_regression_Regr'
 # file_name_extension = 'wrist_10000_t'
 # file_name_extension = 'wrist_10000_Rt'
-file_name_extension = 'WristwithBackground'
+file_name_extension = 'WristwithMovingBackground'
 
 cubes_file = 'Npydatabase/cubes_{}.npy'.format(file_name_extension)
 silhouettes_file = 'Npydatabase/sils_{}.npy'.format(file_name_extension)
@@ -129,14 +129,14 @@ fig = plt.figure()
 # loop = tqdm.tqdm(range(0,nb_im))
 for i in range(0,nb_im):
 
-    randIm = i+20 #select a random image
+    randIm = i+1 #select a random image
     print('computed parameter_{}: '.format(i))
     print(predicted_params[randIm])
     print('ground truth parameter_{}: '.format(i))
     print(params[randIm])
-    print('angle and translation MSE loss for {}: '.format(i))
-    loss_angle = (predicted_params[randIm][0:3] - params[randIm][0:3])**2
-    loss_translation = (predicted_params[randIm][3:6]-params[randIm][3:6])**2
+    print('angle and translation error for {}: '.format(i))
+    loss_angle = (predicted_params[randIm][0:3] - params[randIm][0:3])
+    loss_translation = (predicted_params[randIm][3:6]-params[randIm][3:6])
     print(loss_angle, loss_translation)
     # print('error {} degree and {} meter '.format(np.rad2deg(predicted_params[randIm][0:3]-params[randIm][0:3]), predicted_params[randIm][3:6]-params[randIm][3:6]))
 
@@ -167,5 +167,5 @@ for i in range(0,nb_im):
 print('finish')
 plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.1, hspace=None)
 plt.tight_layout()
-plt.savefig("image/GroundtruthVsRenderTestRt__realbackground_regr.png")
+plt.savefig("image/GroundtruthVsRenderTestRt__realMovingBackground_regr10epoch.png")
 plt.close(fig)

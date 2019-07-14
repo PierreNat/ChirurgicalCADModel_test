@@ -10,7 +10,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import torch.nn as nn
 from utils_functions.resnet50 import resnet50
-from utils_functions.resnet50_multCPU import resnet50_multCPU
 from utils_functions.train_val import train
 from utils_functions.cubeDataset import CubeDataset
 
@@ -19,11 +18,11 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 torch.cuda.empty_cache()
 print(device)
 
-file_name_extension = 'wrist_10000_Rt'  # choose the corresponding database to use
+file_name_extension = 'WristwithMovingBackground'  # choose the corresponding database to use
 
 batch_size = 12
 
-n_epochs = 15
+n_epochs = 10
 
 target_size = (512, 512)
 
@@ -31,11 +30,11 @@ cubes_file = 'Npydatabase/cubes_{}.npy'.format(file_name_extension)
 silhouettes_file = 'Npydatabase/sils_{}.npy'.format(file_name_extension)
 parameters_file = 'Npydatabase/params_{}.npy'.format(file_name_extension)
 
-fileExtension = 'Rt' #string to ad at the end of the file
+fileExtension = 'test' #string to ad at the end of the file
 
 cubeSetName = 'wrist_{}'.format(file_name_extension) #used to describe the document name
 
-date4File = '070519_{}'.format(fileExtension) #mmddyy
+date4File = '071019_{}'.format(fileExtension) #mmddyy
 
 
 cubes = np.load(cubes_file)
@@ -92,18 +91,18 @@ val_dataloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=True, nu
 test_dataloader = DataLoader(test_dataset, batch_size=4, shuffle=False, num_workers=2)
 
 
-# for image, sil, param in train_dataloader:
-#
-#     # print(image[2])
-#     print(image.size(), param.size()) #torch.Size([batch, 3, 512, 512]) torch.Size([batch, 6])
-#     im =2
-#     print(param[im])  # parameter in form tensor([2.5508, 0.0000, 0.0000, 0.0000, 0.0000, 5.0000])
-#
-#     image2show = image[im]  # indexing random  one image
-#     print(image2show.size()) #torch.Size([3, 512, 512])
-#     plt.imshow((image2show * 0.5 + 0.5).numpy().transpose(1, 2, 0))
-#     plt.show()
-#     break  # break here just to show 1 batch of data
+for image, sil, param in train_dataloader:
+
+    # print(image[2])
+    print(image.size(), param.size()) #torch.Size([batch, 3, 512, 512]) torch.Size([batch, 6])
+    im =2
+    print(param[im])  # parameter in form tensor([2.5508, 0.0000, 0.0000, 0.0000, 0.0000, 5.0000])
+
+    image2show = image[im]  # indexing random  one image
+    print(image2show.size()) #torch.Size([3, 512, 512])
+    plt.imshow((image2show * 0.5 + 0.5).numpy().transpose(1, 2, 0))
+    plt.show()
+    break  # break here just to show 1 batch of data
 
 #  ------------------------------------------------------------------
 

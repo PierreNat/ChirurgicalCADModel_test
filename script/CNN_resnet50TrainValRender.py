@@ -11,7 +11,6 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 from torchvision.transforms import ToTensor, Compose, Normalize, Lambda
 from utils_functions.resnet50 import resnet50
-from utils_functions.resnet50_multCPU import resnet50_multCPU
 from utils_functions.train_val_render import train_render
 from utils_functions.cubeDataset import CubeDataset
 
@@ -20,9 +19,9 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 torch.cuda.empty_cache()
 print(device)
 
-file_name_extension = 'WristwithBackground'  # choose the corresponding database to use
+file_name_extension = 'WristwithMovingBackground'  # choose the corresponding database to use
 
-batch_size = 5
+batch_size = 7
 
 n_epochs = 1
 
@@ -33,11 +32,11 @@ cubes_file = 'Npydatabase/cubes_{}.npy'.format(file_name_extension)
 silhouettes_file = 'Npydatabase/sils_{}.npy'.format(file_name_extension)
 parameters_file = 'Npydatabase/params_{}.npy'.format(file_name_extension)
 
-fileExtension = 'test' #string to ad at the end of the file
+fileExtension = 'BCEWithoutL2test' #string to ad at the end of the file
 
 cubeSetName = 'cubes_{}'.format(file_name_extension) #used to describe the document name
 
-date4File = '070919_{}'.format(fileExtension) #mmddyy
+date4File = '071019_{}'.format(fileExtension) #mmddyy
 
 obj_name = 'wrist'
 

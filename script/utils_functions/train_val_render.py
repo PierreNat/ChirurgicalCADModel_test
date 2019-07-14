@@ -106,8 +106,8 @@ def train_render(model, train_dataloader, test_dataloader,
             optimizer.zero_grad()
 
             # object, predicted, ground truth, loss , cuda , and bool for printing logic
-            # loss_function2 = nn.BCELoss()
-            loss = renderBatchSil(obj_name, predicted_params, parameter, loss_function, device, plot) # loss between silhouette, mse or bce loss
+            loss_function2 = nn.BCELoss()
+            loss = renderBatchSil(obj_name, predicted_params, parameter, loss_function2, device, plot) # loss between silhouette, mse or bce loss
 
             #one value each for the step, compute mse loss for all parameters separately
             lossMSE = loss_function(predicted_params, parameter)  # loss computed with computed value and ground truth
