@@ -27,11 +27,11 @@ def main():
     print(vertices_1.shape)
     print(faces_1.shape)
 
-    file_name_extension = 'WristwithMultMovingBackground'
+    file_name_extension = 'OneCenteredImage'
 
 
 
-    nb_im = 10000
+    nb_im = 1000
     #init and create renderer object
     R = np.array([np.radians(0), np.radians(0), np.radians(0)])  # angle in degree
     t = np.array([0, 0, 0])  # translation in meter
@@ -46,12 +46,12 @@ def main():
     loop = tqdm.tqdm(range(0, nb_im))
     for i in loop:
         # define transfomration parameter randomly uniform
-        alpha = uniform(0, 180)
-        beta =  uniform(0, 180)
-        gamma = uniform(0, 180)
-        x = uniform(-2, 2)
-        y = uniform(-2, 2)
-        z = uniform(5, 10) #1000t was done with value between 7 and 10, Rot and trans between 5 10
+        alpha = 0#uniform(0, 180)
+        beta =  0#uniform(0, 180)
+        gamma = 105#uniform(0, 180)
+        x = 0#uniform(-2, 2)
+        y = 0#uniform(-2, 2)
+        z = 6#uniform(5, 10) #1000t was done with value between 7 and 10, Rot and trans between 5 10
         R = np.array([np.radians(alpha), np.radians(beta), np.radians(gamma)])  # angle in degree
         t = np.array([x, y, z])  # translation in meter
 
@@ -78,39 +78,42 @@ def main():
         sil = np.squeeze((sil * 255)).astype(np.uint8) # change from float 0-1 [512,512,1] to uint8 0-255 [512,512]
 
         #grow the list of cube, silhouette and parameters
-
+        cubes_database.extend(image)
         sils_database.extend(sil)
         params_database.extend(Rt)
 
         im_nr = im_nr+1
 
-        BinarySil3layermask = (np.array([sil, sil,sil])).transpose((1, 2, 0))/255
-        # plt.imshow(BinarySil3layermask)
-        numberbackground = random.randint(1,8)
-        backgroundImg = mpimg.imread("3D_objects/background{}.jpg".format(numberbackground))
-
-        sx = backgroundImg.shape[0]
-        sy = backgroundImg.shape[1]
-
-        moveX = random.randint(0,sx-512)
-        moveY = random.randint(0,sy-512)
-        # print(moveX, moveY)
-        cropedbackgroundImg = backgroundImg[moveX:moveX+512, moveY:moveY+512, :]
-        maskedbackground = np.multiply((BinarySil3layermask *-1+1), cropedbackgroundImg/255)
-        imWithBackground = (image + (maskedbackground*255)).astype(np.uint8)
-        # plt.imshow(imWithBackground)
-        image = imWithBackground
-        cubes_database.extend(image)
-
-        # if(im_nr%1 == 0):
-        #     fig = plt.figure()
-        #     fig.add_subplot(1, 2, 1)
-        #     plt.imshow(image)
+        # #put surgical iamge as a background
+        # BinarySil3layermask = (np.array([sil, sil,sil])).transpose((1, 2, 0))/255
+        # # plt.imshow(BinarySil3layermask)
+        # numberbackground = random.randint(1,8)
+        # backgroundImg = mpimg.imread("3D_objects/background{}.jpg".format(numberbackground))
         #
-        #     fig.add_subplot(1, 2, 2)
-        #     plt.imshow(sil, cmap='gray')
-        #     plt.show()
-        #     plt.close(fig)
+        # sx = backgroundImg.shape[0]
+        # sy = backgroundImg.shape[1]
+        #
+        # moveX = random.randint(0,sx-512)
+        # moveY = random.randint(0,sy-512)
+        # # print(moveX, moveY)
+        # cropedbackgroundImg = backgroundImg[moveX:moveX+512, moveY:moveY+512, :]
+        # maskedbackground = np.multiply((BinarySil3layermask *-1+1), cropedbackgroundImg/255)
+        # imWithBackground = (image + (maskedbackground*255)).astype(np.uint8)
+        # # plt.imshow(imWithBackground)
+        # image = imWithBackground
+
+
+        # cubes_database.extend(image)
+
+        if(im_nr%1 == 0):
+            fig = plt.figure()
+            fig.add_subplot(1, 2, 1)
+            plt.imshow(image)
+
+            fig.add_subplot(1, 2, 2)
+            plt.imshow(sil, cmap='gray')
+            plt.show()
+            plt.close(fig)
 
 # save database
 # reshape in the form (nbr of image, x dim, y dim, layers)

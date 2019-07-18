@@ -97,17 +97,17 @@ def train_render(model, train_dataloader, test_dataloader,
             # predicted_params = torch.cat((zero_array, predicted_params), 1)
             # np_params = predicted_params.detach().cpu().numpy() #ensor to numpy array, ERROR HERE, DOES NOT HAVE GRAD
 
-            # if count % 200 == 0:
-            #     plot = True
-            # else:
-            #     plot = False
+            if count % 100 == 0:
+                plot = True
+            else:
+                plot = False
 
             # # zero the parameter gradients
             optimizer.zero_grad()
 
             # object, predicted, ground truth, loss , cuda , and bool for printing logic
             loss_function2 = nn.BCELoss()
-            loss = renderBatchSil(obj_name, predicted_params, parameter, loss_function2, device, plot) # loss between silhouette, mse or bce loss
+            loss = renderBatchSil(obj_name, predicted_params, parameter, loss_function, device, plot) # loss between silhouette, mse or bce loss
 
             #one value each for the step, compute mse loss for all parameters separately
             lossMSE = loss_function(predicted_params, parameter)  # loss computed with computed value and ground truth

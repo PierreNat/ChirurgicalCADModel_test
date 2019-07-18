@@ -25,12 +25,13 @@ print(device)
 # modelName = 'Best_Model_translation/070119_Wrist_test_TempModel_train_cubes_wrist_10000_t_batchsOf7img_0.0%noise_epochs_n2_Wrist_test_RenderRegr'
 # modelName = '070519_part3_30epochs_TempModel_train_cubes_wrist_10000_Rt_batchsOf7img_0.0%noise_epochs_n1_part3_30epochs_RenderRegr'
 # modelName = 'Best_Model_RealBackground/070619_Ubelix_realBackgroundtest_render_part1_TempModel_train_cubes_WristwithBackground_batchsOf20img_0.0%noise_epochs_n15_Ubelix_realBackgroundtest_render_part1_RenderRegr'
-modelName = 'Best_Model_RealMovingBackground/070919_test_FinalModel_train_cubes_WristwithMovingBackground_12batchs_1epochs_Noise0.0_test_RenderRegr'
+modelName = 'Best_Model_RealMultipleMovingBackground/Ubelix_071519_Ubelix_WristwithMultMovingBackground_renderMSE_FinalModel_train_cubes_WristwithMultMovingBackground_20batchs_13epochs_Noise0.0_Ubelix_WristwithMultMovingBackground_renderMSE_Render'
 
 # file_name_extension = 'wrist_10000_t'
 # file_name_extension = 'wrist_10000_Rt'
 file_name_extension ='WristwithBackground'
 file_name_extension = 'WristwithMovingBackground'
+file_name_extension = 'WristwithMultMovingBackground'
 
 cubes_file = 'Npydatabase/cubes_{}.npy'.format(file_name_extension)
 silhouettes_file = 'Npydatabase/sils_{}.npy'.format(file_name_extension)
@@ -183,7 +184,7 @@ print('finish')
 
 plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.1, hspace=None)
 plt.tight_layout()
-plt.savefig("image/GroundtruthVsRenderTestRt_realMovingbackground_rend2.png")
+plt.savefig("image/GroundtruthVsRenderTestRt_realMultMovingbackground_rend2.png")
 plt.close(fig)
 
 

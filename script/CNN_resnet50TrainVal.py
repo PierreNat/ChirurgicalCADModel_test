@@ -20,7 +20,7 @@ print(device)
 
 file_name_extension = 'WristwithMovingBackground'  # choose the corresponding database to use
 
-batch_size = 12
+batch_size = 10
 
 n_epochs = 10
 
